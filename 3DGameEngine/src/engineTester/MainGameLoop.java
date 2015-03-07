@@ -8,6 +8,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import entities.Camera;
 import entities.Entity;
+import entities.Light;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.OBJLoader;
@@ -27,21 +28,21 @@ public class MainGameLoop {
 		
 		// OpenGL expects vertices to be defined counter clockwise by default.
 		
-		RawModel model = OBJLoader.loadObjModel("stall", loader);
-		TexturedModel staticModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("stallTexture")));
+		RawModel model = OBJLoader.loadObjModel("dragon", loader);
+		TexturedModel staticModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("doge2")));
 		
-		Entity entity = new Entity(staticModel, new Vector3f(0,0,-20), 0, 0, 0, 1);
+		Entity entity = new Entity(staticModel, new Vector3f(0,0,-30), 0, 0, 0, 1);
+		Light light = new Light(new Vector3f(0,-10,-20),new Vector3f(1,1,1));
 		Camera camera = new Camera();
 		
 		
 		while (!Display.isCloseRequested()) {
-			entity.increaseRotation(0, 1, 0);
+			entity.increaseRotation(0,0.2f, 0);
 			camera.move();
 			renderer.prepare();
-			
 			shader.start();
+			shader.loadLight(light);
 			shader.loadViewMatrix(camera);
-			
 			renderer.render(entity,shader);
 			shader.stop();
 			DisplayManager.updateDisplay();
