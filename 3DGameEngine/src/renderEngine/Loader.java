@@ -20,31 +20,31 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
 public class Loader {
-	
+
 	private List<Integer> vaos = new ArrayList<Integer>();
 	private List<Integer> vbos = new ArrayList<Integer>();
 	private List<Integer> textures = new ArrayList<Integer>();
-	
-	public RawModel loadToVAO(float[] positions,float[] textureCoords, float[] normals, int[] indices) {
-		
+
+	public RawModel loadToVAO(float[] positions, float[] textureCoords,
+			float[] normals, int[] indices) {
 		/** Creates a new VertexArrayObject */
 		int vaoID = createVAO();
 		bindIndicesBuffer(indices);
-		
-		
+
 		/** Store positional data in VAO. */
-		storeDataInAttributeList(0,3, positions);
-		storeDataInAttributeList(1,2, textureCoords);
-		storeDataInAttributeList(2,3, normals);
+		storeDataInAttributeList(0, 3, positions);
+		storeDataInAttributeList(1, 2, textureCoords);
+		storeDataInAttributeList(2, 3, normals);
 		unbindVAO();
 
 		return new RawModel(vaoID, indices.length);
 	}
-	
-	public int loadTexture(String fileName){
+
+	public int loadTexture(String fileName) {
 		Texture texture = null;
 		try {
-			texture = TextureLoader.getTexture("PNG", new FileInputStream("res/"+fileName+".png"));
+			texture = TextureLoader.getTexture("PNG", new FileInputStream(
+					"res/" + fileName + ".png"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -54,21 +54,20 @@ public class Loader {
 		textures.add(textureID);
 		return textureID;
 	}
-	
-	
-	public void cleanUp(){
-		for (int vao:vaos) {
+
+	public void cleanUp() {
+		for (int vao : vaos) {
 			GL30.glDeleteVertexArrays(vao);
 		}
-		for (int vbo:vbos) {
+		for (int vbo : vbos) {
 			GL15.glDeleteBuffers(vbo);
 		}
-		
-		for (int texture:textures) {
+
+		for (int texture : textures) {
 			GL11.glDeleteTextures(texture);
 		}
 	}
-	
+
 	private int createVAO() {
 		int vaoID = GL30.glGenVertexArrays();
 		vaos.add(vaoID);
@@ -76,36 +75,39 @@ public class Loader {
 		return vaoID;
 	}
 
-	private void storeDataInAttributeList(int attributeNumber,int coordinateSize, float[] data) {
+	private void storeDataInAttributeList(int attributeNumber,
+			int coordinateSize, float[] data) {
 		int vboID = GL15.glGenBuffers();
 		vbos.add(vboID);
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
 		FloatBuffer buffer = storeDataInFloatBuffer(data);
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
-		GL20.glVertexAttribPointer(attributeNumber, coordinateSize, GL11.GL_FLOAT, false, 0,0);
+		GL20.glVertexAttribPointer(attributeNumber, coordinateSize,
+				GL11.GL_FLOAT, false, 0, 0);
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-		
+
 	}
 
 	private void unbindVAO() {
 		GL30.glBindVertexArray(0);
 	}
-	
-	private void bindIndicesBuffer(int[] indices){
+
+	private void bindIndicesBuffer(int[] indices) {
 		int vboID = GL15.glGenBuffers();
 		vbos.add(vboID);
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboID);
 		IntBuffer buffer = storeDataInIntBuffer(indices);
-		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
-		
+		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer,
+				GL15.GL_STATIC_DRAW);
+
 	}
-	
-	private IntBuffer storeDataInIntBuffer(int[] data){
+
+	private IntBuffer storeDataInIntBuffer(int[] data) {
 		IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
 		buffer.put(data);
 		buffer.flip();
 		return buffer;
-		
+
 	}
 
 	private FloatBuffer storeDataInFloatBuffer(float[] data) {

@@ -106,7 +106,7 @@ public class OBJLoader {
 			ArrayList<Integer> indices, ArrayList<Vector2f> textures,
 			ArrayList<Vector3f> normals, float[] textureArray, float[] normalsArray) {
 
-		int currentVertexPointer = Integer.parseInt(vertexData[0]) - 1;
+		int currentVertexPointer = Integer.parseInt(vertexData[0])-1;
 		indices.add(currentVertexPointer);
 		Vector2f currentTex = textures.get(Integer.parseInt(vertexData[1])-1);
 		
