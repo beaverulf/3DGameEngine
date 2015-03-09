@@ -43,8 +43,8 @@ public class MainGameLoop {
 		MasterRenderer renderer = new MasterRenderer();
 		while (!Display.isCloseRequested()) {
 			camera.move();
-			
 			entity.increaseRotation(0,0.2f, 0);
+			
 			renderer.processTerrain(terrain);
 			renderer.processTerrain(terrain2);
 			renderer.processEntity(entity);

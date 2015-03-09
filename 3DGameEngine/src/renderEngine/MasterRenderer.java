@@ -86,7 +86,7 @@ public class MasterRenderer {
 
 		/* Clears the depth buffer bit every frame. */
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		GL11.glClearColor(1, 0, 0, 1);
+		GL11.glClearColor(0, 0.01f, 0.5f, 0.5f);
 
 	}
 	

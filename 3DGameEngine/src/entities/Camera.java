@@ -1,38 +1,60 @@
 package entities;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
 public class Camera {
-	
-	private Vector3f position = new Vector3f(60,5,100);
+
+	private Vector3f position = new Vector3f(60, 10, 90);
 	private float pitch;
 	private float yaw;
 	private float roll;
-	
-	public Camera(){
-		
+
+	public Camera() {
 	}
-	
-	public void move(){
+
+	public void move() {
+
+		float arg_yaw = Mouse.getDX();
+		
+		yaw += arg_yaw / 10;
+		float arg_roll = Mouse.getDY();
+		pitch += -(arg_roll / 10);
+		Mouse.setGrabbed(true);
+
 		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-			position.z -= 0.3f;
+			float toZ = ((float) Math.sin(Math.toRadians(yaw + 90)));
+			float toX = ((float) Math.cos(Math.toRadians(yaw + 90)));
+			position.x -= toX;
+			position.z -= toZ;
+
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-			position.z += 0.3f;
+			float toZ = ((float) Math.sin(Math.toRadians(yaw + 90)));
+			float toX = ((float) Math.cos(Math.toRadians(yaw + 90)));
+			position.x += toX;
+			position.z += toZ;
 		}
+
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-			position.x += 0.3f;
+			float toZ = ((float) Math.sin(Math.toRadians(yaw)));
+			float toX = ((float) Math.cos(Math.toRadians(yaw)));
+			position.x += toX;
+			position.z += toZ;
 		}
+
 		if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-			position.x -= 0.3f;
+			float toZ = ((float) Math.sin(Math.toRadians(yaw)));
+			float toX = ((float) Math.cos(Math.toRadians(yaw)));
+			position.x -= toX;
+			position.z -= toZ;
 		}
-		
-		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-			position.y += 0.3f;
+		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+			position.y += 0.2f;
 		}
-		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-			position.y -= 0.3f;
+		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+			position.y -= 0.2f;
 		}
 	}
 
@@ -51,5 +73,4 @@ public class Camera {
 	public float getRoll() {
 		return roll;
 	}
-	
 }
